@@ -2,7 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-class Student(db.Model):
+class StudentModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), nullable=False)
     email = db.Column(db.String(128), nullable=False, unique=True)
@@ -46,4 +46,4 @@ class Enrollment(db.Model):
         else:
             return 0.0
 
-Student.enrollments = db.relationship('Enrollment', back_populates='student')
+StudentModel.enrollments = db.relationship('Enrollment', back_populates='student')
