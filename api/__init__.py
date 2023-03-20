@@ -5,7 +5,7 @@ from .students.views import students_namespace
 from .auth.views import auth_namespace
 from .utils import db
 from .models.courses import Course
-from .models.users import Student
+from .models.users import Student, User
 from .models.enrollment import Enrollment
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
@@ -33,6 +33,7 @@ def create_app(config=config_dict['dev']):
     def make_shell_context():
         return {
             'db': db,
+            'User': User,
             'Student': Student,
             'Course': Course,
             'Enrollment': Enrollment
