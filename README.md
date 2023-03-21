@@ -23,9 +23,9 @@ pip install -r requirements.txt
 ```
 
 ##### Run the Server
-From within the `./src` directory first ensure you are working using your created virtual environment.
+From within the `schoolify-api` directory first ensure you are working using your created virtual environment.
 
-To run the backend server, execute:
+To run the server, execute:
 
 ```
 set FLASK_APP=api/
@@ -40,7 +40,7 @@ This will the start the server at http://localhost:5000
 ## API Reference
 
 ### Getting Started
-- Base URL: At present this app can only be run locally and is not hosted as a base URL. The backend app is hosted at the default, `http://127.0.0.1:5000/`, which is set as a proxy in the frontend configuration. 
+- Base URL: At present this app can only be run locally and is not hosted as a base URL. The backend app is hosted at the default, `http://127.0.0.1:5000/`
 
 
 ### Error Handling
@@ -70,9 +70,10 @@ The API will return three error types when requests fail:
 ``` {
     "Sign Up": 
         {
-            "id": 1,
-            "username": "Admin",
-            "password": "password",
+            "name": "string",
+            "email": "string",
+            "username": "string",
+            "password": "string"
         },
     "success": true,
 }
@@ -83,6 +84,17 @@ The API will return three error types when requests fail:
 
     - Logs in Admin User
 
--`curl http://127.0.0.1:5000/login`
+-`curl http://127.0.0.1:5000/auth/login`
 
-```
+```{
+    "Login":
+        {
+            "email": "string",
+            "password": "string"
+        },
+
+        {
+            "access_token": "string",
+            "refresh_token":string"
+        }
+}
