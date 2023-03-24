@@ -2,6 +2,7 @@ from flask import Flask
 from flask_restx import Api
 from .config.config import config_dict
 from .students.views import students_namespace
+from .courses.views import course_namespace
 from .auth.views import auth_namespace
 from .utils import db
 from .models.courses import Course
@@ -26,6 +27,7 @@ def create_app(config=config_dict['dev']):
 
     api.add_namespace(auth_namespace)
     api.add_namespace(students_namespace)
+    api.add_namespace(course_namespace)
 
     # db.init_app(app)
 

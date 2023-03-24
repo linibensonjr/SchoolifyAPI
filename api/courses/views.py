@@ -1,75 +1,80 @@
 from flask_restx import Namespace, Resource, fields
+from flask import request
 from ..models.courses import Course, TeachersName
 from ..models.users import Student
 from http import HTTPStatus
 from ..utils import db
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
-course_namespace = Namespace('orders', description='name space for Order')
+course_namespace = Namespace('course', description='name space for Order')
 
 course_model = course_namespace.model(
     'Course', {
         'id': fields.Integer(description='An ID'),
         'name': fields.String(description='Name of course', required=True),
         'code': fields.String(description='Code of course', required=True),
+        'grade': fields.String(description='Grade of course', required=True),
         'teacher': fields.String(description='Size of order', required=True,
-            enum = TeachersName.__members__.keys()
+            enum = ['Iniobong Benson', 'Oluwaseun Oluwafemi', 'Eno-obong Ella', 'Mercy Faleyimu']
             )
                 }
 )
 
-# course_status_model = course_namespace.model(
-#     'OrderStatus', {
-#         'course_status': fields.String(required=True, description='Order Status',
-#              enum = ['PENDING','IN_TRANSIT','DELIVERED'])
-#     }
-# )
+course_add_model = course_namespace.model(
+    'Course', {
+        
+        'name': fields.String(description='Name of course', required=True),
+        'code': fields.String(description='Code of course', required=True),
+        'teacher': fields.String(description='Size of order', required=True),
+    }
+)
 
 @course_namespace.route('/courses')
 class CourseGetCreate(Resource):
 
-    @course_namespace.marshal_with(course_model)
+    @course_namespace.marshal_list_with(course_model)
     @course_namespace.doc(
         description='Get all courses'
     )
-    @jwt_required()
+    # @jwt_required()
     def get(self):
         """
             Get all orders
         """
-        orders = Course.query.all()
+        courses = Course.query.all()
 
-        return orders, HTTPStatus.OK
+        return courses, HTTPStatus.OK
 
     @course_namespace.expect(course_model)
     @course_namespace.marshal_with(course_model)
     @course_namespace.doc(
-        description='Place an Order'
+        description='Add a course'
     )
-    @jwt_required()
+    # @jwt_required()
     def post(self):
         """
-            place an order
+            Add a course
         """
 
-        username = get_jwt_identity()
+        # username = get_jwt_identity()
+        
 
+        # current_user = Student.query.filter_by(username=username).first()
 
-        current_user = Student.query.filter_by(username=username).first()
+        data = request.get_json()
 
-        data = course_namespace.payload
-
-        new_order = Course(
-            size = data['size'],
-            quantity = data['quantity'],
-            flavour = data['flavour']
+        new_course = Course(
+            name = data['name'],
+            code = data['code'],
+            grade = data['grade'],
+            teacher = data['teacher']
         )
 
-        new_order.user = current_user
+        # new_course.user = current_user
 
-        new_order.save()
+        new_course.save()
 
-        return new_order, HTTPStatus.CREATED
+        return new_course, HTTPStatus.CREATED
 
 
 @course_namespace.route('/order/<int:course_id>')
