@@ -13,12 +13,13 @@ class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), nullable=False)
     code = db.Column(db.String(128), nullable=False)
-    grade = db.Column(db.String(128), nullable=False)
+    # grade = db.Column(db.String(128), nullable=False)
     teacher = db.Column(db.Enum(TeachersName), nullable=False)
     enrollment = db.relationship('Enrollment', backref='course')
 
-    def __init__(self, name, teacher):
+    def __init__(self, name, code, teacher):
         self.name = name
+        self.code = code
         self.teacher = teacher
 
     def __repr__(self):

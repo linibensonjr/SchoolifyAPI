@@ -4,6 +4,7 @@ from .config.config import config_dict
 from .students.views import students_namespace
 from .courses.views import course_namespace
 from .auth.views import auth_namespace
+from .enrollment.views import enrollment_namespace
 from .utils import db
 from .models.courses import Course
 from .models.users import Student, User
@@ -28,6 +29,7 @@ def create_app(config=config_dict['dev']):
     api.add_namespace(auth_namespace)
     api.add_namespace(students_namespace)
     api.add_namespace(course_namespace)
+    api.add_namespace(enrollment_namespace)
 
     # db.init_app(app)
 

@@ -8,21 +8,20 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 course_namespace = Namespace('course', description='name space for Order')
 
-course_model = course_namespace.model(
+course_add_model = course_namespace.model(
     'Course', {
         'id': fields.Integer(description='An ID'),
         'name': fields.String(description='Name of course', required=True),
         'code': fields.String(description='Code of course', required=True),
-        'grade': fields.String(description='Grade of course', required=True),
         'teacher': fields.String(description='Size of order', required=True,
-            enum = ['Iniobong Benson', 'Oluwaseun Oluwafemi', 'Eno-obong Ella', 'Mercy Faleyimu']
+            enum = ['Iniobong', 'Oluwaseun', 'Eno-obong Ella', 'Mercy Faleyimu']
             )
                 }
 )
 
-course_add_model = course_namespace.model(
+course_model = course_namespace.model(
     'Course', {
-        
+        'id': fields.Integer(description='An ID'),
         'name': fields.String(description='Name of course', required=True),
         'code': fields.String(description='Code of course', required=True),
         'teacher': fields.String(description='Size of order', required=True),
@@ -31,8 +30,7 @@ course_add_model = course_namespace.model(
 
 @course_namespace.route('/courses')
 class CourseGetCreate(Resource):
-
-    @course_namespace.marshal_list_with(course_model)
+    @course_namespace.marshal_with(course_model)
     @course_namespace.doc(
         description='Get all courses'
     )
@@ -45,7 +43,7 @@ class CourseGetCreate(Resource):
 
         return courses, HTTPStatus.OK
 
-    @course_namespace.expect(course_model)
+    @course_namespace.expect(course_add_model)
     @course_namespace.marshal_with(course_model)
     @course_namespace.doc(
         description='Add a course'
@@ -64,10 +62,9 @@ class CourseGetCreate(Resource):
         data = request.get_json()
 
         new_course = Course(
-            name = data['name'],
-            code = data['code'],
-            grade = data['grade'],
-            teacher = data['teacher']
+            name = data.get('name'),
+            code = data.get('code'),
+            teacher = data.get('teacher')
         )
 
         # new_course.user = current_user

@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash
 from ..models.users import User
 from http import HTTPStatus
 from werkzeug.security import check_password_hash
-from flask_jwt_extended import create_access_token, create_refresh_token, get_jwt_identity
+from flask_jwt_extended import create_access_token, create_refresh_token, get_jwt_identity, jwt_required
 
 auth_namespace = Namespace('auth', description='Authentication namespace')
 
@@ -77,6 +77,9 @@ class Login(Resource):
             return {'message': 'login failed'}, HTTPStatus.UNAUTHORIZED
 
     
-class Student(Resource):
-    def get(self):
-        pass
+@auth_namespace.route('/refresh')
+class Refresh(Resource):
+    @jwt_required(refresh=True)
+    def post(self):
+        email = get_jwt_identity()
+        return {'username': email}, HTTPStatus.OK

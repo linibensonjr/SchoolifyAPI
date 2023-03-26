@@ -8,7 +8,7 @@ class Student(db.Model):
     email = db.Column(db.String(128), nullable=False, unique=True)
     course = db.relationship('Enrollment', backref='student')
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
-    date_modified = db.Column(db.DateTime, default=datetime.utcnow)
+    date_modified = db.Column(db.DateTime, default=datetime.utcnow) 
 
     def __init__(self, name, email):
         self.name = name
