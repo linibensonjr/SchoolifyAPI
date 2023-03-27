@@ -79,7 +79,7 @@ The API will return three error types when requests fail:
 }
 
 ```
-### GET /login
+### POST /login
 - General:
 
     - Logs in Admin User
@@ -98,3 +98,11 @@ The API will return three error types when requests fail:
             "refresh_token":string"
         }
 }
+
+### POST /refresh
+- General:
+
+    - Refreshes the active session
+
+-`curl http://127.0.0.1:5000/auth/refresh`
+
