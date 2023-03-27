@@ -98,6 +98,7 @@ The API will return three error types when requests fail:
             "refresh_token":string"
         }
 }
+```
 
 ### POST /refresh
 - General:
